@@ -1,0 +1,36 @@
+name: Build C for aarch64 on macOS
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest  # macOSランナーを使用
+
+    steps:
+      # 1. ソースコードをチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Homebrewを使って必要なツールをインストール
+      - name: Install cross-compilation tools
+        run: |
+
+          brew install aarch64-linux-gnu-gcc
+
+      # 3. Cコードのコンパイル
+      - name: Compile C code for aarch64
+        run: |
+          aarch64-linux-gnu-gcc Kerner64Patcher -o Kerner64Patcher.c
+
+      # 4. バイナリをアーティファクトとしてアップロード
+      - name: Upload the binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: my_program
+          path: my_program
